@@ -14,7 +14,7 @@ const categories = [
 
 const TrackList = ({ setCurrentTrack, setIsPlaying }) => {
   return (
-    <SkeletonTheme baseColor="#2d3748" highlightColor="#4a5568">
+    <SkeletonTheme baseColor="#4F4F4F" highlightColor="#A6A6A6">
       <div className="text-white">
         <h1 className="text-3xl font-bold mb-6">Главная</h1>
         <hr className="border-2 rounded border-white mb-6"></hr>
@@ -131,7 +131,7 @@ const TrackCategory = ({ title, params, setCurrentTrack, setIsPlaying }) => {
 };
 
 const TrackSkeleton = () => (
-  <div className="bg-gray-800 p-4 rounded-lg shadow-md flex flex-col items-center min-w-[180px]">
+  <div className="bg-neutral-800 p-4 rounded-lg shadow-md flex flex-col items-center min-w-[180px]">
     <Skeleton width={160} height={160} borderRadius={8} />
     <h2 className="mt-4">
       <Skeleton width={120} height={20} />
