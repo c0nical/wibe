@@ -11,10 +11,6 @@ import Profile from "./pages/Profile";
 import TitlePage from "./pages/TitlePage";
 import { auth } from "./firebase"; // Firebase Auth
 import { useAuthState } from "react-firebase-hooks/auth"; // Хук для авторизации
-<BrowserRouter basename="/wibe">
-  <App />
-</BrowserRouter>
-
 function Loader() {
   return (
     <div className="h-screen flex items-center justify-center bg-[#1C1C1C] text-white">
@@ -84,7 +80,7 @@ function App() {
   if (loading) return <Loader />; // Показываем загрузку, пока Firebase проверяет user
 
   return (
-    <Router>
+    <Router basename="/wibe">
       <Routes>
         {/* Титульная страница */}
         <Route path="/" element={!user ? <TitlePage /> : <Navigate to="/home" replace />} />
