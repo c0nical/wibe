@@ -30,7 +30,7 @@ function AppLayout({ user, currentTrack, setCurrentTrack, isPlaying, setIsPlayin
     <div className="h-screen flex flex-col bg-[#1C1C1C] text-white overflow-hidden">
       <header className="flex justify-between items-center bg-[#0F0F0F] p-4 shadow-md">
         <div className="text-xl font-bold">
-          <img src="./assets/img/logo/logo.png" className="w-12" alt="Logo" />
+          <img src={`${process.env.PUBLIC_URL}/assets/img/logo/logo.png`} className="w-12" alt="Logo" />
         </div>
         <div className="flex items-center gap-4">
           <Link to="/profile" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-600">

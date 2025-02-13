@@ -19,7 +19,7 @@ const TitlePage = () => {
 
     return (
         <div className="flex flex-col items-center justify-center h-screen bg-neutral-900 text-white">
-            <img src="./assets/img/logo/logo.png" className="w-48" alt="Logo" />
+            <img src={`${process.env.PUBLIC_URL}/assets/img/logo/logo.png`} className="w-48" alt="Logo" />
             <h1 className="text-4xl font-bold">Веб-приложение для стриминга музыки</h1>
             <p className="mt-2 text-2xl">Дипломный проект</p>
             <p className="mt-1 text-2xl">Разработано: Сергей Ситдиков Фёдорович</p>
