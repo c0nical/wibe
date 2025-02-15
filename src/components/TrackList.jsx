@@ -12,7 +12,7 @@ const categories = [
   { title: "Жанр: Рок", params: { tag: "rock" } },
 ];
 
-const TrackList = ({ setCurrentTrack, setIsPlaying }) => {
+const TrackList = ({ setCurrentTrack, setIsPlaying, currentTrack, isPlaying }) => {
   return (
     <SkeletonTheme baseColor="#4F4F4F" highlightColor="#A6A6A6">
       <div className="text-white">
@@ -25,6 +25,8 @@ const TrackList = ({ setCurrentTrack, setIsPlaying }) => {
             params={category.params}
             setCurrentTrack={setCurrentTrack}
             setIsPlaying={setIsPlaying}
+            currentTrack={currentTrack}
+            isPlaying={isPlaying}
           />
         ))}
       </div>
@@ -32,7 +34,7 @@ const TrackList = ({ setCurrentTrack, setIsPlaying }) => {
   );
 };
 
-const TrackCategory = ({ title, params, setCurrentTrack, setIsPlaying }) => {
+const TrackCategory = ({ title, params, setCurrentTrack, setIsPlaying, currentTrack, isPlaying }) => {
   const [tracks, setTracks] = useState([]);
   const [loading, setLoading] = useState(true);
   const scrollRef = useRef(null);
@@ -75,6 +77,15 @@ const TrackCategory = ({ title, params, setCurrentTrack, setIsPlaying }) => {
     }
   };
 
+  const handleTrackClick = (track) => {
+    if (currentTrack?.id === track.id && isPlaying) {
+      setIsPlaying(false); // Если трек уже играется, то пауза
+    } else {
+      setCurrentTrack(track);
+      setIsPlaying(true);
+    }
+  };
+
   return (
     <div className="mb-8 overflow-x-auto bg-neutral-900 p-5 rounded-lg">
       <div className="flex justify-between items-center mb-4 bg-gray-800 p-4 rounded-lg">
@@ -102,11 +113,10 @@ const TrackCategory = ({ title, params, setCurrentTrack, setIsPlaying }) => {
           : tracks.map((track) => (
               <div
                 key={track.id}
-                className="bg-neutral-800 p-4 rounded-lg shadow-md hover:bg-neutral-700 transition cursor-pointer flex flex-col items-center min-w-[180px]"
-                onClick={() => {
-                  setCurrentTrack(track);
-                  setIsPlaying(true);
-                }}
+                className={`bg-neutral-800 p-4 rounded-lg shadow-md hover:bg-neutral-700 transition cursor-pointer flex flex-col items-center min-w-[180px] ${
+                  currentTrack?.id === track.id && isPlaying ? "bg-green-700" : ""
+                }`}
+                onClick={() => handleTrackClick(track)}
               >
                 <div className="mb-4">
                   {track.album_image ? (

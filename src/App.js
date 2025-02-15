@@ -9,6 +9,7 @@ import AuthLayout from "./components/AuthLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/Profile";
 import TitlePage from "./pages/TitlePage";
+import Favorites from "./pages/Favorites";
 import { auth } from "./firebase"; // Firebase Auth
 import { useAuthState } from "react-firebase-hooks/auth"; // Хук для авторизации
 function Loader() {
@@ -49,6 +50,9 @@ function AppLayout({ user, currentTrack, setCurrentTrack, isPlaying, setIsPlayin
               <Link to="/library" className="block bg-gray-700 px-4 py-2 rounded hover:bg-gray-600 mt-2">
                 Библиотека
               </Link>
+              <Link to="/favorites" className="block bg-gray-700 px-4 py-2 rounded hover:bg-gray-600 mt-2">
+                Избранное
+              </Link>
             </nav>
             <SidebarPlayer
               currentTrack={currentTrack}
@@ -64,6 +68,7 @@ function AppLayout({ user, currentTrack, setCurrentTrack, isPlaying, setIsPlayin
               <Route path="/home" element={<Home setCurrentTrack={setCurrentTrack} setIsPlaying={setIsPlaying} />} />
               <Route path="/library" element={<Library />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/favorites" element={<Favorites setCurrentTrack={setCurrentTrack} setIsPlaying={setIsPlaying} />} />
             </Route>
           </Routes>
         </main>
@@ -76,6 +81,7 @@ function App() {
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [user, loading] = useAuthState(auth); // Проверяем авторизацию
+  
 
   if (loading) return <Loader />; // Показываем загрузку, пока Firebase проверяет user
 
