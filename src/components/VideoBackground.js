@@ -14,7 +14,7 @@ const VideoBackground = () => {
         Your browser does not support the video tag.
       </video>
       {/* Затемнение */}
-      <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-75"></div>
+      <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50"></div>
     </div>
   );
 };
