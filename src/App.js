@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, Navigate, useNavigate } from "react-router-dom";
 import SidebarPlayer from "./components/SidebarPlayer";
 import Home from "./pages/Home";
@@ -12,8 +12,8 @@ import TitlePage from "./pages/TitlePage";
 import Favorites from "./pages/Favorites";
 import SearchResults from "./pages/SearchResults";
 import { FaSearch } from "react-icons/fa";
-import { auth } from "./firebase"; // Firebase Auth
-import { useAuthState } from "react-firebase-hooks/auth"; // Хук для авторизации
+import { auth } from "./firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 function Loader() {
   return (
@@ -43,8 +43,6 @@ const Header = () => {
     <header className="flex justify-between items-center bg-[#0F0F0F] p-4 shadow-md">
       <div className="flex gap-6">
         <img src={`${process.env.PUBLIC_URL}/assets/img/logo/logo.png`} className="w-12" alt="Logo" />
-        
-        {/* Поле поиска с лупой внутри */}
         <div className="relative">
           <input
             type="text"
@@ -62,8 +60,6 @@ const Header = () => {
           </button>
         </div>
       </div>
-
-      {/* Кнопка "Личный кабинет" */}
       <div className="flex items-center gap-4">
         <Link to="/profile" className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-600">
           Личный кабинет
@@ -73,8 +69,14 @@ const Header = () => {
   );
 };
 
-function AppLayout({ user, currentTrack, setCurrentTrack, isPlaying, setIsPlaying }) {
+const AppLayout = ({ user, currentTrack, setCurrentTrack, isPlaying, setIsPlaying }) => {
   const location = useLocation();
+  const [hoverPos, setHoverPos] = useState(null);
+
+  useEffect(() => {
+    const hideHover = setTimeout(() => setHoverPos(null), 2000);
+    return () => clearTimeout(hideHover);
+  }, [hoverPos]);
 
   if (["/", "/login", "/signup"].includes(location.pathname)) {
     return null;
@@ -82,20 +84,35 @@ function AppLayout({ user, currentTrack, setCurrentTrack, isPlaying, setIsPlayin
 
   return (
     <div className="h-screen flex flex-col bg-[#1C1C1C] text-white overflow-hidden">
-      <Header /> {/* Добавляем Header сюда */}
+      <Header />
       <div className="flex flex-1 min-h-0 overflow-hidden">
         {user && (
-          <aside className="w-64 bg-[#2E2E2E] h-full flex-shrink-0 overflow-y-auto">
-            <nav className="p-4">
-              <Link to="/home" className="block bg-gray-700 px-4 py-2 rounded hover:bg-gray-600">
-                Главная
-              </Link>
-              <Link to="/library" className="block bg-gray-700 px-4 py-2 rounded hover:bg-gray-600 mt-2">
-                Библиотека
-              </Link>
-              <Link to="/favorites" className="block bg-gray-700 px-4 py-2 rounded hover:bg-gray-600 mt-2">
-                Избранное
-              </Link>
+          <aside className="w-64 bg-[#2E2E2E] h-full flex-shrink-0 overflow-y-auto relative">
+            <nav className="p-4 relative">
+              <div
+                className="absolute bg-neutral-600 transition-all duration-300 rounded"
+                style={{
+                  width: "calc(100% - 2rem)",
+                  height: "40px",
+                  top: hoverPos?.top || 0,
+                  left: "1rem",
+                  opacity: hoverPos ? 1 : 0,
+                }}
+              ></div>
+              {[
+                { path: "/home", label: "Главная" },
+                { path: "/library", label: "Библиотека" },
+                { path: "/favorites", label: "Избранное" },
+              ].map((item, index) => (
+                <Link
+                  key={index}
+                  to={item.path}
+                  className="block relative px-4 py-2 rounded mt-2 hover:outline hover:outline-2 hover:outline-neutral-500"
+                  onMouseEnter={(e) => setHoverPos({ top: e.target.offsetTop })}
+                >
+                  {item.label}
+                </Link>
+              ))}
             </nav>
             <SidebarPlayer
               currentTrack={currentTrack}
@@ -104,7 +121,6 @@ function AppLayout({ user, currentTrack, setCurrentTrack, isPlaying, setIsPlayin
             />
           </aside>
         )}
-
         <main className="flex-1 p-6 overflow-y-auto bg-[#1C1C1C]">
           <Routes>
             <Route element={<ProtectedRoute user={user} />}>
@@ -119,28 +135,23 @@ function AppLayout({ user, currentTrack, setCurrentTrack, isPlaying, setIsPlayin
       </div>
     </div>
   );
-}
+};
 
 function App() {
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [user, loading] = useAuthState(auth); // Проверяем авторизацию
+  const [user, loading] = useAuthState(auth);
 
-  if (loading) return <Loader />; // Показываем загрузку, пока Firebase проверяет user
+  if (loading) return <Loader />;
 
   return (
     <Router>
       <Routes>
-        {/* Титульная страница */}
         <Route path="/" element={!user ? <TitlePage /> : <Navigate to="/home" replace />} />
-
-        {/* Страницы входа и регистрации */}
         <Route element={<AuthLayout />}>
           <Route path="/login" element={user ? <Navigate to="/home" replace /> : <Login />} />
           <Route path="/signup" element={user ? <Navigate to="/home" replace /> : <SignUp />} />
         </Route>
-
-        {/* Основной интерфейс после авторизации */}
         <Route
           path="/*"
           element={<AppLayout user={user} currentTrack={currentTrack} setCurrentTrack={setCurrentTrack} isPlaying={isPlaying} setIsPlaying={setIsPlaying} />}

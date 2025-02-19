@@ -76,7 +76,7 @@ const Favorites = ({ setCurrentTrack, setIsPlaying, currentTrack, isPlaying }) =
       {favorites.length === 0 ? (
         <p>У вас нет избранных треков.</p>
       ) : (
-        <div className="bg-neutral-800 shadow-md rounded-lg py-4">
+        <div className="bg-inherit rounded-lg py-4">
           <div className="grid grid-cols-10 gap-4 text-sm text-neutral-300 font-bold mb-4">
             <span className="col-span-1 text-center border-r-2 border-neutral-500">Фото</span>
             <span className="col-span-4 border-r-2 border-neutral-500">Название</span>
