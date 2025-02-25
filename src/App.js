@@ -42,7 +42,7 @@ const Header = () => {
   return (
     <header className="flex justify-between items-center bg-[#0F0F0F] p-4 shadow-md">
       <div className="flex gap-6">
-        <img src={`${process.env.PUBLIC_URL}/assets/img/logo/logo.png`} className="w-12" alt="Logo" />
+        <img src={`${process.env.PUBLIC_URL}/assets/img/logo/logo.svg`} className="w-12" alt="Logo" />
         <div className="relative">
           <input
             type="text"

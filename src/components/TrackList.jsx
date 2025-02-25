@@ -17,7 +17,6 @@ const TrackList = ({ setCurrentTrack, setIsPlaying, currentTrack, isPlaying }) =
     <SkeletonTheme baseColor="#4F4F4F" highlightColor="#A6A6A6">
       <div className="text-white">
         <h1 className="text-3xl font-bold mb-6">Главная</h1>
-        <hr className="border-2 rounded border-white mb-6"></hr>
         {categories.map((category, index) => (
           <TrackCategory
             key={index}
