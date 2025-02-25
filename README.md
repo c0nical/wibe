@@ -31,7 +31,7 @@
 
 ```bash
 # Клонируем репозиторий
-git clone https://github.com/твоя-ссылка/wibe.git
+git clone https://github.com/c0nical/wibe.git
 
 # Переходим в папку проекта
 cd wibe
@@ -40,4 +40,4 @@ cd wibe
 npm install
 
 # Запуск приложения
-npm run dev
+npm start
